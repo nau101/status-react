@@ -54,8 +54,9 @@
      [react/text {:number-of-lines 3
                   :ellipsize-mode :tail}
       bio]]]
-   [action-button/action-button {:label               (i18n/label :t/view-cryptokitties)
-                                 :icon                :icons/address
-                                 :icon-opts           {:color colors/blue}
-                                 :accessibility-label :open-collectible-button
-                                 :on-press            #(re-frame/dispatch [:open-browser {:url (str base-url id)}])}]])
+   [action-button/action-button
+    {:label               (i18n/label :t/view-cryptokitties)
+     :icon                :icons/address
+     :icon-opts           {:color colors/blue}
+     :accessibility-label :open-collectible-button
+     :on-press            #(re-frame/dispatch [:open-collectible-in-browser {:url (str base-url id)}])}]])

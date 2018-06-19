@@ -27,8 +27,9 @@
       name]
      [react/text
       description]]]
-   [action-button/action-button {:label               (i18n/label :t/view-cryptostrikers)
-                                 :icon                :icons/address
-                                 :icon-opts           {:color colors/blue}
-                                 :accessibility-label :open-collectible-button
-                                 :on-press            #(re-frame/dispatch [:open-browser {:url external_url}])}]])
+   [action-button/action-button
+    {:label               (i18n/label :t/view-cryptostrikers)
+     :icon                :icons/address
+     :icon-opts           {:color colors/blue}
+     :accessibility-label :open-collectible-button
+     :on-press            #(re-frame/dispatch [:open-collectible-in-browser {:url external_url}])}]])

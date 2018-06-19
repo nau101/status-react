@@ -147,6 +147,12 @@
    {:label      "Tap"
     :trigger    [:navigation-replace :wallet-transaction-sent]
     :properties {:target :wallet-transaction-sent}}
+   {:label      "Tap"
+    :trigger    [:navigate-to :display-collectible]
+    :properties {:target :display-collectible}}
+   {:label      "Tap"
+    :trigger    [:open-collectible-in-browser]
+    :properties {:target :open-collectible-in-browser}}
 
    ;;Profile
    {:label      "Tap"
