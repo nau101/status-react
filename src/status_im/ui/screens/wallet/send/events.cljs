@@ -48,8 +48,8 @@
                     (clj->js {:from from :to to :value value :gas gas :gasPrice gas-price})
                     #()))
 
-(defn- send-tokens [{:keys [web3 from to value gas gas-price symbol network]}]
-  (let [contract (:address (tokens/symbol->token (keyword (ethereum/network-names network)) symbol))]
+(defn- send-tokens [{:keys [web3 from to value gas gas-price symbol chain]}]
+  (let [contract (:address (tokens/symbol->token (keyword chain) symbol))]
     (erc20/transfer web3 contract from to value {:gas gas :gasPrice gas-price} #())))
 
 (re-frame/reg-fx
@@ -321,9 +321,8 @@
 
 (handlers/register-handler-fx
  :wallet/sign-transaction
- (fn [{{:keys [web3] :as db} :db} [_ later?]]
+ (fn [{{:keys [web3 chain] :as db} :db} [_ later?]]
    (let [db' (assoc-in db [:wallet :send-transaction :wrong-password?] false)
-         network (:network db)
          {:keys [amount id password to symbol method gas gas-price]} (get-in db [:wallet :send-transaction])]
      (if id
        {::accept-transaction {:id              id
@@ -342,7 +341,8 @@
                             :gas-price gas-price
                             :symbol    symbol
                             :method    method
-                            :network   network}}))))
+                            :chain     chain}}))))
+
 (handlers/register-handler-fx
  :wallet/sign-message-modal
  (fn [{db :db} _]

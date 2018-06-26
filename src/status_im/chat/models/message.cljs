@@ -365,7 +365,7 @@
     :keys           [prefill prefillBotDb]
     :as             request}
    {:keys [params command handler-data content-type]}
-   network
+   chain
    prices
    tx-hash]
   (let [content (if request
@@ -377,7 +377,7 @@
                    :prefill-bot-db      prefillBotDb}
                   {:params (cond-> params
                              (= (:name command) constants/command-send)
-                             (assoc :network (ethereum/network-names network)
+                             (assoc :network chain
                                     :fiat-amount (money/usd-amount (:amount params) (-> params :asset keyword) prices)
                                     :tx-hash tx-hash))})
         content' (assoc content
@@ -413,7 +413,7 @@
                                :dispatch [:update-transactions]}]))))
 
 (defn send-command
-  [{{:keys [current-public-key chats network prices] :as db} :db :keys [now] :as cofx} params]
+  [{{:keys [current-public-key chats chain prices] :as db} :db :keys [now] :as cofx} params]
   (let [{{:keys [handler-data to-message command] :as content} :command chat-id :chat-id} params
         ;; We send commands to deleted chats as well, i.e. signed later transactions
         chat    (or (get chats chat-id) {:chat-id chat-id})
@@ -421,7 +421,7 @@
         command-name (:name command)
         tx-hash (get-in db [:wallet :send-transaction :tx-hash])]
     (handlers-macro/merge-fx cofx
-                             (upsert-and-send (prepare-command-message current-public-key chat now request content network prices tx-hash))
+                             (upsert-and-send (prepare-command-message current-public-key chat now request content chain prices tx-hash))
                              (console-events/console-respond-command-messages command handler-data)
                              (requests-events/request-answered chat-id to-message)
                              (update-transactions command-name tx-hash {:with-delay? false}))))
@@ -437,7 +437,7 @@
       (merge {:dispatch-n dn} (dissoc fx :dispatch-n) (dissoc command :dispatch-n)))))
 
 (defn invoke-command-handlers
-  [{{:contacts/keys [contacts] :keys [network] :as db} :db}
+  [{{:contacts/keys [contacts] :keys [chain] :as db} :db}
    {{:keys [command params id]} :command
     :keys [chat-id address]
     :as orig-params}]
@@ -451,7 +451,7 @@
                       :context    (cond-> {:from            address
                                            :to              to
                                            :current-account (get db :account/account)
-                                           :network         (ethereum/network-names network)
+                                           :network         chain
                                            :message-id      id}
                                     (:async-handler command)
                                     (assoc :orig-params orig-params))}]
