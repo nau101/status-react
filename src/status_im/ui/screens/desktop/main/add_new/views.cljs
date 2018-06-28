@@ -7,11 +7,10 @@
             [status-im.i18n :as i18n]
             [re-frame.core :as re-frame]
             [status-im.ui.screens.desktop.main.add-new.styles :as styles]
+            [status-im.ui.screens.add-new.new-public-chat.view :refer [default-public-chats]]
             [status-im.ui.screens.add-new.new-public-chat.db :as public-chat-db]
             [taoensso.timbre :as log]
             [status-im.ui.components.react :as react]))
-
-(def default-public-chats ["status" "openbounty" "edcon" "ethereum"])
 
 (views/defview new-contact []
   (views/letsubs [new-contact-identity [:get :contacts/new-identity]
