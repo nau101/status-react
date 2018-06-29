@@ -3,6 +3,7 @@
             [status-im.constants :as constants]
             [status-im.i18n :as i18n]
             [status-im.utils.core :as utils]
+            [status-im.utils.config :as config]
             [status-im.utils.ethereum.core :as ethereum]
             [status-im.utils.datetime :as time]
             [status-im.chat.events.console :as console-events]
@@ -128,13 +129,14 @@
     (transport/send (protocol/map->MessagesSeen {:message-ids #{message-id}}) chat-id cofx)))
 
 (defn- display-notification [chat-id cofx]
-  (let [view-id (get-in cofx [:db :view-id])
-        current-chat-id (get-in cofx [:db :current-chat-id])]
-    (when-not (and (= :chat view-id)
-                   (= current-chat-id chat-id))
-      {:display-notification-fx {:title   (i18n/label :notifications-new-message-title)
-                                 :body    (i18n/label :notifications-new-message-body)
-                                 :chat-id chat-id}})))
+  (when config/in-app-notifications-enabled?
+    (let [view-id (get-in cofx [:db :view-id])
+          current-chat-id (get-in cofx [:db :current-chat-id])]
+      (when-not (and (= :chat view-id)
+                     (= current-chat-id chat-id))
+        {:display-notification-fx {:title   (i18n/label :notifications-new-message-title)
+                                   :body    (i18n/label :notifications-new-message-body)
+                                   :chat-id chat-id}}))))
 
 (defn- add-received-message
   [batch?
