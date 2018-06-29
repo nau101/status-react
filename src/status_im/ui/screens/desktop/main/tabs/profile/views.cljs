@@ -50,10 +50,8 @@
     [react/view {:margin-top 40 :margin-horizontal 10}
      [react/view
       [profile-badge current-account]]
-     [react/view {:style {:height 1 :background-color "#e8ebec" :margin-horizontal 16}}]
      [react/view
       [share-contact-code]]
-     [react/view {:style {:height 1 :background-color "#e8ebec" :margin-horizontal 16}}]
      [react/view {:style styles/logout-row}
       [react/touchable-highlight {:on-press #(re-frame/dispatch [:logout])}
        [react/text {:style {:color colors/red}} (i18n/label :t/logout)]]
