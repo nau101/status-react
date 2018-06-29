@@ -50,7 +50,7 @@
     [react/view {:margin-top 40 :margin-horizontal 10}
      [react/view
       [profile-badge current-account]]
-     [react/view
+     [react/view {:style {:align-items :center}}
       [share-contact-code]]
      [react/view {:style styles/logout-row}
       [react/touchable-highlight {:on-press #(re-frame/dispatch [:logout])}
