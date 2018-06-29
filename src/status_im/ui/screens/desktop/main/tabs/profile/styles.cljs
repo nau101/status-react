@@ -63,6 +63,7 @@
 
 (def qr-code-text
   {:font-size     16
+   :text-align    :center
    :margin-bottom 16})
 
 (def qr-code-copy
