@@ -146,6 +146,13 @@ class CrossIcon(BaseButton):
         self.locator = self.Locator.accessibility_id('done-button')
 
 
+class ShareButton(BaseButton):
+
+    def __init__(self, driver):
+        super(ShareButton, self).__init__(driver)
+        self.locator = self.Locator.accessibility_id('share-code-button')
+
+
 class AdvancedButton(BaseButton):
 
     def __init__(self, driver):
@@ -253,6 +260,7 @@ class ProfileView(BaseView):
         self.edit_picture_button = EditPictureButton(self.driver)
         self.confirm_button = ConfirmButton(self.driver)
         self.cross_icon = CrossIcon(self.driver)
+        self.share_button = ShareButton(self.driver)
         self.advanced_button = AdvancedButton(self.driver)
         self.debug_mode_toggle = DebugModeToggle(self.driver)
 

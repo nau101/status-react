@@ -171,7 +171,8 @@ class WalletView(BaseView):
         counter = 0
         while True:
             if counter >= wait_time:
-                pytest.fail('Balance is not changed during %s seconds!' % wait_time)
+                info('Balance is not changed during %s seconds!' % wait_time)
+                return
             elif self.get_eth_value() != expected_balance:
                 counter += 10
                 time.sleep(10)
@@ -190,3 +191,9 @@ class WalletView(BaseView):
         self.done_button.click()
         self.yes_button.click()
         return phrase
+
+    def get_wallet_address(self):
+        self.request_button.click()
+        address = self.address_text.text
+        self.back_button.click()
+        return address
